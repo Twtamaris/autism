@@ -240,100 +240,29 @@ def draw_load_menu(index):
 
 typing_variable = 100
 run = True
-class Button:
-    def __init__(self, screen, label_font, medium_font, white, gray, gold, black, green_is_on, playing, bpm, beats, HEIGHT, instruments, clicked):
-        self.screen = screen
-        self.label_font = label_font
-        self.medium_font = medium_font
-        self.white = white
-        self.gray = gray
-        self.gold = gold
-        self.black = black
-        self.green_is_on = green_is_on
-        self.playing = playing
-        self.bpm = bpm
-        self.beats = beats
-        self.HEIGHT = HEIGHT
-        self.instruments = instruments
-        self.clicked = clicked
-    
-    def play_pause_button(self, playing):
-        play_pause = pygame.draw.rect(self.screen, (255, 102, 255), [50, self.HEIGHT - 150, 200, 100], 0, 5)
-        play_text = self.label_font.render('Play/Pause', True, self.white)
-        self.screen.blit(play_text, (70, self.HEIGHT - 130))
 
-        if playing:
-            play_text2 = self.medium_font.render('Playing', True, (50, 50, 50))  # dark gray
-        else:
-            pygame.draw.rect(self.screen, (102, 0, 204), [50, self.HEIGHT - 150, 200, 100], 0, 5)
-            play_text = self.label_font.render('Play/Pause', True, self.white)
-            self.screen.blit(play_text, (70, self.HEIGHT - 130))
-            play_text2 = self.medium_font.render('Paused', True, (50, 50, 50))  # dark gray
+# class Button():
+#     # def __init__(self):
 
-        self.screen.blit(play_text2, (70, self.HEIGHT - 100))
-        return play_pause
+        
+        
+#     def play_pause_button():
+#         play_pause = pygame.draw.rect(
+#         screen, (255, 102, 255), [50, HEIGHT - 150, 200, 100], 0, 5)
+#         play_text = label_font.render('Play/Pause', True, white)
+#         screen.blit(play_text, (70, HEIGHT - 130))
+#         if playing:
+#             play_text2 = medium_font.render('Playing', True, dark_gray)
+#         else:
+#             pygame.draw.rect(screen, (102, 0, 204), [
+#                             50, HEIGHT - 150, 200, 100], 0, 5)
+#             play_text = label_font.render('Play/Pause', True, white)
+#             screen.blit(play_text, (70, HEIGHT - 130))
 
-    def speed_button(self):
-        bpm_rect = pygame.draw.rect(self.screen, (0, 255, 255), [300, self.HEIGHT - 150, 200, 100], 5, 5)
-        pygame.draw.rect(self.screen, (0, 255, 255), [300, self.HEIGHT - 150, 200, 100 / 2], 5, 5)
+#             play_text2 = medium_font.render('Paused', True, dark_gray)
+#         screen.blit(play_text2, (70, HEIGHT - 100))
 
-        bpm_text = self.medium_font.render('INC SPEED', True, self.white)
-        self.screen.blit(bpm_text, (320, self.HEIGHT - 140))
-        bpm_text2 = self.medium_font.render('DEC SPEED', True, self.white)
-        self.screen.blit(bpm_text2, (320, self.HEIGHT - 90))
-
-        bpm_add_rect = pygame.draw.rect(self.screen, (102, 255, 102), [510, self.HEIGHT - 150, 48, 48], 0, 5)
-        bpm_sub_rect = pygame.draw.rect(self.screen, (204, 0, 0), [510, self.HEIGHT - 100, 48, 48], 0, 5)
-
-        add_text = self.medium_font.render('+', True, self.white)
-        self.screen.blit(add_text, (527, self.HEIGHT - 140))
-        sub_text = self.medium_font.render('-', True, self.white)
-        self.screen.blit(sub_text, (530, self.HEIGHT - 90))
-
-        return bpm_add_rect, bpm_sub_rect
-
-    def board_resize_button(self):
-        beats_rect = pygame.draw.rect(self.screen, self.gold, [600, self.HEIGHT - 150, 200, 100], 3, 5)
-        beats_text = self.medium_font.render('How to Play?', True, self.white)
-        self.screen.blit(beats_text, (622, self.HEIGHT - 117))
-
-        beats_add_rect = pygame.draw.rect(self.screen, self.gray, [810, self.HEIGHT - 150, 48, 48], 0, 5)
-        beats_sub_rect = pygame.draw.rect(self.screen, self.gray, [810, self.HEIGHT - 100, 48, 48], 0, 5)
-
-        add_text2 = self.medium_font.render('W', True, self.white)
-        self.screen.blit(add_text2, (820, self.HEIGHT - 140))
-        sub_text2 = self.medium_font.render('L', True, self.white)
-        self.screen.blit(sub_text2, (820, self.HEIGHT - 90))
-
-        return beats_add_rect, beats_sub_rect
-
-    def clear_board_button(self):
-        if self.green_is_on == 1:
-            clear = pygame.draw.rect(self.screen, (102, 0, 204), [1150, self.HEIGHT - 150, 200, 100], 0, 5)
-        else:
-            clear = pygame.draw.rect(self.screen, (255, 102, 255), [1150, self.HEIGHT - 150, 200, 100], 0, 5)
-
-        play_text = self.label_font.render('Clear Board', True, self.white)
-        self.screen.blit(play_text, (1160, self.HEIGHT - 130))
-
-        return clear
-
-    def load_and_save_button(self):
-        save_button = pygame.draw.rect(self.screen, self.gray, [900, self.HEIGHT - 150, 200, 48], 0, 5)
-        pygame.draw.rect(self.screen, (0, 255, 255), [900, self.HEIGHT - 150, 200, 48], 3, 5)
-        save_text = self.label_font.render('Save Sound', True, self.white)
-        self.screen.blit(save_text, (920, self.HEIGHT - 140))
-
-        load_button = pygame.draw.rect(self.screen, self.gray, [900, self.HEIGHT - 98, 200, 48], 0, 5)
-        load_text = self.label_font.render('Load Sound', True, self.white)
-        pygame.draw.rect(self.screen, (0, 255, 255), [900, self.HEIGHT - 98, 200, 48], 3, 5)
-        self.screen.blit(load_text, (920, self.HEIGHT - 90))
-
-        return save_button, load_button
-
-    
-
-
+#         return play_pause, play_text
 
 
 
@@ -345,19 +274,92 @@ while run:
 
     boxes, saurab = draw_grid(clicked, active_beat, active_list)
 
-    button = Button(screen, label_font, medium_font, white, gray, gold, black, green_is_on, playing, bpm, beats, HEIGHT, instruments, clicked)
-    play_pause= button.play_pause_button(playing)
+    play_pause = pygame.draw.rect(
+        screen, (255, 102, 255), [50, HEIGHT - 150, 200, 100], 0, 5)
+    play_text = label_font.render('Play/Pause', True, white)
+    screen.blit(play_text, (70, HEIGHT - 130))
+    if playing:
+        play_text2 = medium_font.render('Playing', True, dark_gray)
+    else:
+        pygame.draw.rect(screen, (102, 0, 204), [
+                         50, HEIGHT - 150, 200, 100], 0, 5)
+        play_text = label_font.render('Play/Pause', True, white)
+        screen.blit(play_text, (70, HEIGHT - 130))
 
+        play_text2 = medium_font.render('Paused', True, dark_gray)
+    screen.blit(play_text2, (70, HEIGHT - 100))
+    # beats per minute buttons
+    bpm_rect = pygame.draw.rect(
+        screen, (0, 255, 255), [300, HEIGHT - 150, 200, 100], 5, 5)
 
-    bpm_add_rect, bpm_sub_rect = button.speed_button()
+    pygame.draw.rect(screen, (0, 255, 255), [
+                     300, HEIGHT - 150, 200, 100/2], 5, 5)
+    # pygame.draw.rect(screen, gray, [300, HEIGHT - 150+50, 200, 100/2], 5, 5)
 
-    beats_add_rect, beats_sub_rect = button.board_resize_button()
+    bpm_text = medium_font.render('INC SPEED', True, white)
+    screen.blit(bpm_text, (320, HEIGHT - 140))
+    # bpm_text2 = label_font.render(f'{bpm}', True, white)
+    bpm_text2 = medium_font.render('DEC SPEED', True, white)
+    screen.blit(bpm_text2, (320, HEIGHT - 90))
 
-    clear = button.clear_board_button()
+    bpm_add_rect = pygame.draw.rect(
+        screen, (102, 255, 102), [510, HEIGHT - 150, 48, 48], 0, 5)
+    bpm_sub_rect = pygame.draw.rect(
+        screen, (204, 0, 0), [510, HEIGHT - 100, 48, 48], 0, 5)
 
-    save_button, load_button = button.load_and_save_button()
+    add_text = medium_font.render('+', True, white)
+    screen.blit(add_text, (527, HEIGHT - 140))
+    sub_text = medium_font.render('-', True, white)
+    screen.blit(sub_text, (530, HEIGHT - 90))
 
+    # beats per loop buttons
+    beats_rect = pygame.draw.rect(
+        screen, gold, [600, HEIGHT - 150, 200, 100], 3, 5)
+    beats_text = medium_font.render('How to Play?', True, white)
+    screen.blit(beats_text, (622, HEIGHT - 117))
+    beats_text2 = label_font.render(f'{beats}', True, white)
+    # screen.blit(beats_text2, (670, HEIGHT - 100))
+    beats_add_rect = pygame.draw.rect(
+        screen, gray, [810, HEIGHT - 150, 48, 48], 0, 5)
+    beats_sub_rect = pygame.draw.rect(
+        screen, gray, [810, HEIGHT - 100, 48, 48], 0, 5)
     
+    pygame.draw.rect(
+        screen, (249, 226, 226), [810, HEIGHT - 150, 48, 48], 2, 5)
+    pygame.draw.rect(
+        screen, (249, 226, 226), [810, HEIGHT - 100, 48, 48], 2, 5)
+    # beats_add_rect = pygame.draw.rect(
+    #     screen, gold, [810, HEIGHT - 150, 48, 48], 3, 5)
+    # beats_sub_rect = pygame.draw.rect(
+    #     screen, gold, [810, HEIGHT - 100, 48, 48], 3, 5)
+    add_text2 = medium_font.render('W', True, white)
+    
+    screen.blit(add_text2, (820, HEIGHT - 140))
+    sub_text2 = medium_font.render('L', True, white)
+    screen.blit(sub_text2, (820, HEIGHT - 90))
+    
+    # clear board button
+    if green_is_on == 1:
+        clear = pygame.draw.rect(screen, (102, 0, 204), [
+                                 1150, HEIGHT - 150, 200, 100], 0, 5)
+
+    else:
+        clear = pygame.draw.rect(screen, (255, 102, 255), [
+                                 1150, HEIGHT - 150, 200, 100], 0, 5)
+    play_text = label_font.render('Clear Board', True, white)
+    screen.blit(play_text, (1160, HEIGHT - 130))
+
+    # save and load buttons
+    save_button = pygame.draw.rect(
+        screen, gray, [900, HEIGHT - 150, 200, 48], 0, 5)
+    pygame.draw.rect(screen, (0, 255, 255), [900, HEIGHT - 150, 200, 48], 3, 5)
+    save_text = label_font.render('Save Sound', True, white)
+    screen.blit(save_text, (920, HEIGHT - 140))
+    load_button = pygame.draw.rect(
+        screen, gray, [900, HEIGHT - 98, 200, 48], 0, 5)
+    load_text = label_font.render('Load Sound', True, white)
+    pygame.draw.rect(screen, (0, 255, 255), [900, HEIGHT - 98, 200, 48], 3, 5)
+    screen.blit(load_text, (920, HEIGHT - 90))
     # instrument rectangles
     if green_is_on == 0:
         pygame.draw.rect(screen, black, [0, 0, 1400, 200])
@@ -500,7 +502,15 @@ while run:
             string_convert = ''.join(new_messages_list)
             saving_text = label_font.render(string_convert, True, black)
             screen.blit(saving_text, (150, 110))
-  
+    # saurab = pygame.draw.rect(screen, white, [110, 90, 1200, 70], 0, 5)
+
+    # pygame.draw.rect(screen, (102, 0, 204), [1150, HEIGHT - 150, 200, 100], 0, 5)
+
+    # print(new_messages_list)
+
+        # if typing_variable == i:
+        #     saving_text = label_font.render(list_messages[i], True, red)
+        #     screen.blit(saving_text, (575, 80))
 
     pygame.display.flip()
     # pygame.draw.rect(screen, gray, [50, HEIGHT - 150, 200, 100], 0, 5)
