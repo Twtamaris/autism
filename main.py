@@ -18,101 +18,44 @@ active_length = 0
 active_beat = 0
 list_pic = []
 # list_messages = []
-# car_img1 = pygame.image.load('11.png')
-# car_img2 = pygame.image.load('22.png')
-# car_img3 = pygame.image.load('33.png')
-# car_img4 = pygame.image.load('1111.png')
-# car_img5 = pygame.image.load('111.jpg')
+
 car_img6 = pygame.image.load('phutu/1.jpg')
 for i in range(1, 58):
     car_img = pygame.image.load('phutu/'+str(i)+'.jpg')
     list_pic.append(car_img)
 
-message = 'I to we they he she it me am want eat go love fell is know Need use this help_ you wear that the Some more a these Good ice_cream hungry birthday Bad food down out Here there done those Stop yes hello thank_you no because what who when where please with_'
-
-message = message.upper()
-list_messages = message.split(' ')
-list_messages = ['I ', 'TO ', 'WE ', 'THEY ', 'HE ', 'SHE ', 'IT ', 'ME ', 'am ', 'WANT ', 'EAT ', 'GO ', 'LOVE ', 'FELL ', 'IS ', 'KNOW ', 'NEED ', 'USE ', 'THIS ', 'help_ ', 'you ', 'WEAR ', 'THAT ', 'THE ', 'SOME ', 'MORE ', 'A ', 'THESE ',
-                 'GOOD ', 'ice_cream ', 'HUNGRY ', 'CAKE ', 'BAD ', 'FOOD ', 'DOWN ', 'OUT ', 'HERE ', 'THERE ', 'DONE ', 'THOSE ', 'STOP ', 'YES ', 'HELLO ', 'THANK_YOU ', 'NO ', 'BECAUSE ', 'WHAT ', 'WHO ', 'WHEN ', 'WHERE ', 'PLEASE ', 'with_ ', '', '', '', '', '', '']
+list_messages = ['I ', 'TO ', 'WE ', 'THEY ', 'HE ', 'SHE ', 'IT ', 'ME ', 'am ', 'WANT ', 'EAT ', 'GO ', 'LOVE ', 'FELL ', 'IS ', 'KNOW ', 'NEED ', 'USE ', 'THIS ', 'HELP ', 'you ', 'WEAR ', 'THAT ', 'THE ', 'SOME ', 'MORE ', 'A ', 'THESE ',
+                 'GOOD ', 'ICE_CREAM ', 'HUNGRY ', 'CAKE ', 'BAD ', 'FOOD ', 'DOWN ', 'OUT ', 'HERE ', 'THERE ', 'DONE ', 'THOSE ', 'STOP ', 'YES ', 'HELLO ', 'THANK_YOU ', 'NO ', 'BECAUSE ', 'WHAT ', 'WHO ', 'WHEN ', 'WHERE ', 'PLEASE ', 'WITH ', '', '', '', '', '', '']
 
 green_is_on = 0
-# sounds
-'''
-hi_hat = mixer.Sound('sounds\kit2\hi hat.wav')
-snare = mixer.Sound('sounds\kit2\snare.wav')
-kick = mixer.Sound('sounds\kit2\kick.wav')
-crash = mixer.Sound('sounds\kit2\crash.wav')
-clap = mixer.Sound('sounds\kit2\clap.wav')
-tom = mixer.Sound("sounds\kit2\\tom.wav")
-'''
-hi_hat = mixer.Sound('sounds\hi hat.wav')
-snare = mixer.Sound('sounds\snare.wav')
-kick = mixer.Sound('i.mp3')
-crash = mixer.Sound('she.mp3')
-clap = mixer.Sound('it.mp3')
-tom = mixer.Sound("know.mp3")
-kick = mixer.Sound('i.mp3')
-crash = mixer.Sound('she.mp3')
-clap = mixer.Sound('it.mp3')
-tom = mixer.Sound("know.mp3")
-hello = mixer.Sound("sound\hello.mp3")
-list_sound = [kick, crash, clap, hello]
+#
+# Dictionary with sound categories
+sound_dict = {
+    1: ['i', 'to', 'we', 'they'],
+    2: ['he', 'she', 'it', 'me'],
+    3: ['am', 'want', 'eat', 'go'],
+    4: ['love', 'fell', 'is', 'know'],
+    5: ['need', 'use', 'this', 'help'],
+    6: ['you', 'wear', 'that', 'the'],
+    7: ['some', 'more', 'a', 'these'],
+    8: ['good', 'ice_cream', 'hungry', 'birthday'],
+    9: ['bad', 'food', 'down', 'out'],
+    10: ['here', 'there', 'done', 'those'],
+    11: ['stop', 'yes', 'hello', 'thank_you'],
+    12: ['no', 'because', 'what', 'who'],
+    13: ['when', 'where', 'please', 'with']
+}
 
-i_ = mixer.Sound('sound/i.mp3')
-to = mixer.Sound('sound/to.mp3')
-we = mixer.Sound('sound/we.mp3')
-they = mixer.Sound('sound/they.mp3')
-he = mixer.Sound('sound/he.mp3')
-she = mixer.Sound('sound/she.mp3')
-it = mixer.Sound('sound/it.mp3')
-me = mixer.Sound('sound/me.mp3')
-am = mixer.Sound('sound/am.mp3')
-want = mixer.Sound('sound/want.mp3')
-eat = mixer.Sound('sound/eat.mp3')
-go = mixer.Sound('sound/go.mp3')
-love = mixer.Sound('sound/love.mp3')
-fell = mixer.Sound('sound/fell.mp3')
-is_ = mixer.Sound('sound/is.mp3')
-know = mixer.Sound('sound/know.mp3')
-need = mixer.Sound('sound/need.mp3')
-use = mixer.Sound('sound/use.mp3')
-this = mixer.Sound('sound/this.mp3')
-help_ = mixer.Sound('sound/help_.mp3')
-you = mixer.Sound('sound/you.mp3')
-wear = mixer.Sound('sound/wear.mp3')
-that = mixer.Sound('sound/that.mp3')
-the = mixer.Sound('sound/the.mp3')
-some = mixer.Sound('sound/some.mp3')
-more = mixer.Sound('sound/more.mp3')
-a = mixer.Sound('sound/a.mp3')
-these = mixer.Sound('sound/these.mp3')
-good = mixer.Sound('sound/good.mp3')
-ice_cream = mixer.Sound('sound/ice_cream.mp3')
-hungry = mixer.Sound('sound/hungry.mp3')
-birthday = mixer.Sound('sound/birthday.mp3')
-bad = mixer.Sound('sound/bad.mp3')
-food = mixer.Sound('sound/food.mp3')
-down = mixer.Sound('sound/down.mp3')
-out = mixer.Sound('sound/out.mp3')
-here = mixer.Sound('sound/here.mp3')
-there = mixer.Sound('sound/there.mp3')
-done = mixer.Sound('sound/done.mp3')
-those = mixer.Sound('sound/those.mp3')
-stop = mixer.Sound('sound/stop.mp3')
-yes = mixer.Sound('sound/yes.mp3')
-with_ = mixer.Sound('sound/with.mp3')
-thank_you = mixer.Sound('sound/thank_you.mp3')
-no = mixer.Sound('sound/no.mp3')
-because = mixer.Sound('sound/because.mp3')
-what = mixer.Sound('sound/what.mp3')
-who = mixer.Sound('sound/who.mp3')
-when = mixer.Sound('sound/when.mp3')
-where = mixer.Sound('sound/where.mp3')
-please = mixer.Sound('sound/please.mp3')
-hello = mixer.Sound('sound/hello.mp3')
-list_sound_variable = [[i_, to, we, they], [he, she, it, me], [am, want, eat, go], [love, fell, is_, know], [need, use, this, help_], [you, wear, that, the], [
-    some, more, a, these], [good, ice_cream, hungry, birthday], [bad, food, down, out], [here, there, done, those], [stop, yes, hello, thank_you], [no, because, what, who], [when, where, please, with_]]
-# list_sound_variable = []
+# Create the list of sound variables programmatically
+list_sound_variable = []
+
+for key, sound_list in sound_dict.items():
+    sound_group = [mixer.Sound(f'sound/{sound}.mp3') for sound in sound_list]
+    list_sound_variable.append(sound_group)
+
+# Now you have list_sound_variable populated
+
+
 
 
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
@@ -149,77 +92,63 @@ new_messages_list = []
 
 def draw_grid(clicks, beat, actives):
     boxes = []
-    left_box = pygame.draw.rect(screen, gray, [0, 0, 200, HEIGHT - 200], 5)
-    bottom_box = pygame.draw.rect(
-        screen, gray, [0, HEIGHT - 200, WIDTH, 200], 5)
     for i in range(instruments + 1):
         pygame.draw.line(screen, gray, (0, i * 100), (200, i * 100), 3)
-    colors = [gray, white, gray]
-    # img = pygame.image.load('hehe.png')
-    # img = pygame.transform.scale(img, (100, 100))
-    # screen.blit(img, (10, 10))
-    hi_hat_text = label_font.render('', True, colors[actives[0]])
-    screen.blit(hi_hat_text, (30, 30))
-    snare_text = label_font.render('', True, colors[actives[1]])
-    screen.blit(snare_text, (30, 130))
-    kick_text = label_font.render('', True, colors[actives[2]])
-    screen.blit(kick_text, (30, 230))
-    crash_text = label_font.render('', True, colors[actives[3]])
-    screen.blit(crash_text, (30, 330))
-    clap_text = label_font.render('', True, colors[actives[4]])
-    screen.blit(clap_text, (30, 430))
-    tom_text = label_font.render('', True, colors[actives[5]])
-    screen.blit(tom_text, (30, 530))
+    # colors = [gray, white, gray]
+
+    # hi_hat_text = label_font.render('', True, colors[actives[0]])
+    # screen.blit(hi_hat_text, (30, 30))
+    # snare_text = label_font.render('', True, colors[actives[1]])
+    # screen.blit(snare_text, (30, 130))
+    # kick_text = label_font.render('', True, colors[actives[2]])
+    # screen.blit(kick_text, (30, 230))
+    # crash_text = label_font.render('', True, colors[actives[3]])
+    # screen.blit(crash_text, (30, 330))
+    # clap_text = label_font.render('', True, colors[actives[4]])
+    # screen.blit(clap_text, (30, 430))
+    # tom_text = label_font.render('', True, colors[actives[5]])
+    # screen.blit(tom_text, (30, 530))
+    # Beat = columns = 13 , Instrument = rows = 6
     
+    k = 0
     for i in range(beats):
-        for j in range(instruments):
+        for j in range(2, instruments):
             if clicks[j][i] == -1:
                 color = gray
             else:
-
                 if actives[j] == 1:
                     color = green
-
                 else:
                     color = dark_gray
+
+            # Calculate the rectangle's dimensions
+            rect_width = (WIDTH - 200) // beats
+            rect_height = 100  # Fixed height of each row
+
+            # Draw the grid rectangle
             rect = pygame.draw.rect(screen, color,
-                                    [i * ((WIDTH - 200) // beats) + 205, (j * 100) + 5, ((WIDTH - 200) // beats) - 10,
-                                     90], 0, 3)
-            if j > 1:
-                list_rect.append(rect)
-            pygame.draw.rect(screen, gold, [i * ((WIDTH - 200) // beats) + 200, j * 100, ((WIDTH - 200) // beats), 100],
-                             5, 5)
+                                    [i * rect_width + 205, (j * 100) + 5, rect_width - 10, 90], 0, 3)
+            list_rect.append(rect)
 
-            pygame.draw.rect(screen, black,
-                             [i * ((WIDTH - 200) // beats) + 200, j *
-                              100, ((WIDTH - 200) // beats), 100],
-                             2, 5)
+            # Outline the rectangles
+            pygame.draw.rect(screen, gold, [i * rect_width + 200, j * 100, rect_width, rect_height], 5, 5)
+            pygame.draw.rect(screen, black, [i * rect_width + 200, j * 100, rect_width, rect_height], 2, 5)
+
+            # Only blit the picture if k is within bounds of list_pic
+            if k < len(list_pic):
+                # Dynamically resize the image to fit within the grid cell
+                image = pygame.transform.scale(list_pic[k], (rect_width - 20, rect_height - 20))  # Adjust image size
+                screen.blit(image, (211 + i * rect_width, (j * 100) + 10))  # Blit the scaled image onto the screen
+                k += 1  # Move to the next picture for blitting
+
             boxes.append((rect, (i, j)))
-    active = pygame.draw.rect(screen, blue,
-                              [beat * ((WIDTH - 200) // beats) + 200, 0,
-                               ((WIDTH - 200) // beats), instruments * 100],
-                              1, 3)
-    k = 0
-    for j in range(13):
-        for i in range(4):
-            screen.blit(list_pic[k], (211+j*92, 210+i*100))
-            k += 1
-    
-    #white
-    # pygame.draw.rect(screen, (251, 239, 239), [0, 200, 170, 100], 0,5)
 
-    # screen.blit(car_img4, (0, 0))
-    # screen.blit((400, 1200), (0, 0), black)j
-    # pygame.draw.rect(screen, gray, [0, 0, 200, HEIGHT - 200], 5)
+
+
     pygame.draw.rect(screen, black, [0, 0, 1400, 200])
     saurab = pygame.draw.rect(screen, (245,229,229), [110, 90, 1200, 70], 0, 5)
     pygame.draw.rect(screen, (248,155,248), [110, 90, 1200, 70], 3, 5)
-    
 
-    # for event in pygame.event.get():j
-    #     if event.type == pygame.MOUSEBUTTONDOWN:
-
-    # screen.blit(background, (0, 0))
 
     return boxes, saurab
 
@@ -232,18 +161,6 @@ def play_notes():
                     if i == (k+2) and active_beat == j:
                         list_sound_variable[j][k].play()
 
-            # if i == 0:
-            #     hi_hat.play()
-            # if i == 1:
-            #     snare.play()
-            # if i == 2:
-            #     kick.play()
-            # if i == 3:
-            #     crash.play()
-            # if i == 4:
-            #     clap.play()
-            # if i == 5:
-            #     tom.play()
 
 
 def draw_save_menu(beat_name, typing):
