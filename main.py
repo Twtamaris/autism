@@ -26,7 +26,7 @@ for i in range(1, 58):
     car_img = pygame.image.load('phutu/'+str(i)+'.jpg')
     list_pic.append(car_img)
 
-list_messages = ['I ', 'TO ', 'WE ', 'THEY ', 'HE ', 'SHE ', 'IT ', 'ME ', 'am ', 'WANT ', 'EAT ', 'GO ', 'LOVE ', 'FELL ', 'IS ', 'KNOW ', 'NEED ', 'USE ', 'THIS ', 'HELP ', 'you ', 'WEAR ', 'THAT ', 'THE ', 'SOME ', 'MORE ', 'A ', 'THESE ',
+list_messages = ['I ', 'TO ', 'WE ', 'THEY ', 'HE ', 'SHE ', 'IT ', 'ME ', 'am ', 'WANT ', 'EAT ', 'GO ', 'LOVE ', 'FELL ', 'IS ', 'KNOW ', 'NEED ', 'USE ', 'THIS ', 'HELP ', 'YOU ', 'WEAR ', 'THAT ', 'THE ', 'SOME ', 'MORE ', 'A ', 'THESE ',
                  'GOOD ', 'ICE_CREAM ', 'HUNGRY ', 'CAKE ', 'BAD ', 'FOOD ', 'DOWN ', 'OUT ', 'HERE ', 'THERE ', 'DONE ', 'THOSE ', 'STOP ', 'YES ', 'HELLO ', 'THANK_YOU ', 'NO ', 'BECAUSE ', 'WHAT ', 'WHO ', 'WHEN ', 'WHERE ', 'PLEASE ', 'WITH ', '', '', '', '', '', '']
 
 green_is_on = 0
@@ -88,12 +88,14 @@ saved_text = []
 typing = False
 index = 100
 list_rect = []
+# THis list will store the index of words to be displayed in the text bar
 on_of_list = []
 new_messages_list = []
 
 
 def draw_grid(clicks, beat, actives):
     boxes = []
+   
     for i in range(instruments + 1):
         pygame.draw.line(screen, gray, (0, i * 100), (200, i * 100), 3)
     
@@ -331,10 +333,72 @@ class Button:
 
         return save_button, load_button
 
+
+    def initial_type_bar(self, green_is_on, new_messages_list):
+    # instrument rectangles
+        if green_is_on == 0:
+            pygame.draw.rect(self.screen, self.black, [0, 0, 1400, 200])
+            pygame.draw.rect(self.screen, self.gray, [110, 90, 1200, 70], 0, 5)
+            text_ = self.label_font.render('Press Key to Start...', True, (207, 201, 201))
+            pygame.draw.rect(self.screen, self.white, [110, 90, 1200, 70], 2, 5)
+            
+            screen.blit(text_, (140, 110))
+            # pygame.draw.rect(screen, gray, [550, 75, 300, 70], 0, 5)
+            new_messages_list = []
+        return new_messages_list
+    
     
 
+# Helper functions to handle repetitive tasks
+def toggle_play_pause(play_pause_rect, event_pos, playing, active_beat, active_length):
+    """Toggle play/pause state."""
+    if play_pause_rect.collidepoint(event_pos):
+        playing = not playing
+        if playing:
+            active_beat = 0
+            active_length = 0
+    return playing, active_beat, active_length
 
+def adjust_beats(beats_add_rect, beats_sub_rect, event_pos, beats, clicked, instruments):
+    """Handle adding/removing beats."""
+    if beats_add_rect.collidepoint(event_pos):
+        beats += 1
+        for row in clicked:
+            row.append(-1)
+    elif beats_sub_rect.collidepoint(event_pos) and beats > 1:
+        beats -= 1
+        for row in clicked:
+            row.pop()
+    return beats, clicked
 
+def adjust_bpm(bpm_add_rect, bpm_sub_rect, event_pos, bpm):
+    """Increase or decrease BPM."""
+    if bpm_add_rect.collidepoint(event_pos):
+        bpm += 5
+    elif bpm_sub_rect.collidepoint(event_pos) and bpm > 5:
+        bpm -= 5
+    return bpm
+
+def clear_board(clear_rect, event_pos, instruments, beats):
+    """Clear the board if 'clear' is clicked."""
+    if clear_rect.collidepoint(event_pos):
+        return [[-1 for _ in range(beats)] for _ in range(instruments)]
+    return None
+
+def handle_instrument_click(instrument_rects, event_pos, active_list):
+    """Toggle the state of instruments."""
+    for i, rect in enumerate(instrument_rects):
+        if rect.collidepoint(event_pos):
+            active_list[i] *= -1
+    return active_list
+
+def handle_text_input(event, beat_name, typing):
+    """Handle text input for beat name."""
+    if event.type == pygame.TEXTINPUT and typing:
+        beat_name += event.text
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE and len(beat_name) > 0:
+        beat_name = beat_name[:-1]
+    return beat_name
 
 
 
@@ -343,6 +407,7 @@ while run:
     timer.tick(fps)
     screen.fill(black)
 
+    """Boxes contains the rectangle of 4 rows and 13 columns in tuple format (rect1, (i,j))"""
     boxes, saurab = draw_grid(clicked, active_beat, active_list)
 
     button = Button(screen, label_font, medium_font, white, gray, gold, black, green_is_on, playing, bpm, beats, HEIGHT, instruments, clicked)
@@ -357,17 +422,12 @@ while run:
 
     save_button, load_button = button.load_and_save_button()
 
+
+
+    new_messages_list = button.initial_type_bar(green_is_on, new_messages_list)
     
-    # instrument rectangles
-    if green_is_on == 0:
-        pygame.draw.rect(screen, black, [0, 0, 1400, 200])
-        pygame.draw.rect(screen, gray, [110, 90, 1200, 70], 0, 5)
-        text_ = label_font.render('Press Key to Start...', True, (207, 201, 201))
-        pygame.draw.rect(screen, white, [110, 90, 1200, 70], 2, 5)
-        
-        screen.blit(text_, (140, 110))
-        # pygame.draw.rect(screen, gray, [550, 75, 300, 70], 0, 5)
-        new_messages_list = []
+
+
     instrument_rects = []
     for i in range(instruments):
         rect = pygame.rect.Rect((0, i * 100), (200, 100))
@@ -381,10 +441,14 @@ while run:
     elif load_menu:
         exit_button, loading_button, entry_rect, delete_button, loaded_information = draw_load_menu(
             index)
+        
+        
+       
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN and not save_menu and not load_menu:
+            # Check if the mouse is clicked in the 58 rectangles
             for i in range(58):
                 if list_rect[i].collidepoint(event.pos):
                     typing_variable = i
@@ -394,38 +458,33 @@ while run:
 
             for i in range(len(boxes)):
                 if boxes[i][0].collidepoint(event.pos):
+                    # boxes[i][1] contains tuple (i,j) , where i = 13 and j = 4
                     coords = boxes[i][1]
                     clicked[coords[1]][coords[0]] *= -1
+                    
             
 
         if event.type == pygame.MOUSEBUTTONUP and not save_menu and not load_menu:
-            if play_pause.collidepoint(event.pos) and playing:
-                playing = False
-            elif play_pause.collidepoint(event.pos) and not playing:
-                playing = True
-                active_beat = 0
-                active_length = 0
-            if clear.collidepoint(event.pos):
+            # Play/Pause Button
+            playing, active_beat, active_length = toggle_play_pause(play_pause, event.pos, playing, active_beat, active_length)
+            
+            # Clear Button
+            cleared_board = clear_board(clear, event.pos, instruments, beats)
+            if cleared_board is not None:
+                clicked = cleared_board
                 green_is_on = 0
+            
+            # Adjust Beats
+            beats, clicked = adjust_beats(beats_add_rect, beats_sub_rect, event.pos, beats, clicked, instruments)
 
-            if beats_add_rect.collidepoint(event.pos):
-                beats += 1
-                for i in range(len(clicked)):
-                    clicked[i].append(-1)
-            elif beats_sub_rect.collidepoint(event.pos):
-                beats -= 1
-                for i in range(len(clicked)):
-                    clicked[i].pop(-1)
-            if bpm_add_rect.collidepoint(event.pos):
-                bpm += 5
-            elif bpm_sub_rect.collidepoint(event.pos):
-                bpm -= 5
-            if clear.collidepoint(event.pos):
-                clicked = [[-1 for _ in range(beats)]
-                           for _ in range(instruments)]
-            for i in range(len(instrument_rects)):
-                if instrument_rects[i].collidepoint(event.pos):
-                    active_list[i] *= -1
+            # Adjust BPM
+            bpm = adjust_bpm(bpm_add_rect, bpm_sub_rect, event.pos, bpm)
+
+            # Toggle Instruments
+            active_list = handle_instrument_click(instrument_rects, event.pos, active_list)
+                    
+                    
+            # Save and load button
             if save_button.collidepoint(event.pos):
                 save_menu = True
             if load_button.collidepoint(event.pos):
@@ -446,6 +505,8 @@ while run:
                         typing = True
                 if load_menu:
                     index = (event.pos[1] - 100) // 50
+
+            # Load and save button action
             if save_menu:
                 if saving_button.collidepoint(event.pos):
                     file = open('saved_beats.txt', 'w')
@@ -481,30 +542,60 @@ while run:
             if event.key == pygame.K_ESCAPE:
                 run = False
 
+    # Time of each beat that will be played
     beat_length = 3600 // bpm
 
     if playing:
+        # Play the beat until active beat time that has been played is 
+        # Equal to the beat_length
         if active_length < beat_length:
             active_length += 1
         else:
             active_length = 0
+            # if active beat is not the last beat than go to next beat
             if active_beat < beats - 1:
                 active_beat += 1
                 beat_changed = True
+            # if the fucking beat if last beat than go to first beat
             else:
                 active_beat = 0
                 beat_changed = True
-    for i in on_of_list:
+                
+                
+#     # Iterate over the unique values in on_of_list to handle toggling
+    unique_on_of_list = set(on_of_list)
+    unique_on_of_list = sorted(unique_on_of_list)
+
+    # Create a new list for selected messages based on the toggling behavior
+    updated_messages_list = []
+
+    for i in unique_on_of_list:
+        # If the item has been selected an odd number of times, it should be visible
         if on_of_list.count(i) % 2 == 1:
-            # convert list to string
-            string_convert = ''.join(new_messages_list)
-            saving_text = label_font.render(string_convert, True, black)
-            screen.blit(saving_text, (150, 110))
+            updated_messages_list.append(list_messages[i])
+
+    # Convert the updated messages list to a string
+    string_convert = ''.join(updated_messages_list)
+
+    # Render the updated message on the screen
+    saving_text = label_font.render(string_convert, True, black)
+    screen.blit(saving_text, (150, 110))
+
+
+
+
+    # for i in on_of_list:
+    #     # if hello, hello is pressed two times, in first time it will display and in second time it will remove the text
+    #     if on_of_list.count(i) % 2 == 1:
+    #         # convert list to string
+    #         string_convert = ''.join(new_messages_list)
+    #         saving_text = label_font.render(string_convert, True, black)
+    #         screen.blit(saving_text, (150, 110))
   
 
     pygame.display.flip()
     # pygame.draw.rect(screen, gray, [50, HEIGHT - 150, 200, 100], 0, 5)
-
+ 
 
 file = open('saved_beats.txt', 'w')
 for i in range(len(saved_beats)):
