@@ -1,22 +1,13 @@
-class Button():
-    # def __init__(self):
-
-        
-        
-    def play_pause_button():
-        play_pause = pygame.draw.rect(
-        screen, (255, 102, 255), [50, HEIGHT - 150, 200, 100], 0, 5)
-        play_text = label_font.render('Play/Pause', True, white)
-        screen.blit(play_text, (70, HEIGHT - 130))
-        if playing:
-            play_text2 = medium_font.render('Playing', True, dark_gray)
+        beat_length = 200
+        if active_length < beat_length:
+            active_length += 1
         else:
-            pygame.draw.rect(screen, (102, 0, 204), [
-                            50, HEIGHT - 150, 200, 100], 0, 5)
-            play_text = label_font.render('Play/Pause', True, white)
-            screen.blit(play_text, (70, HEIGHT - 130))
-
-            play_text2 = medium_font.render('Paused', True, dark_gray)
-        screen.blit(play_text2, (70, HEIGHT - 100))
-
-        return play_pause, play_text
+            active_length = 0
+            # if active beat is not the last beat than go to next beat
+            if active_beat < beats - 1:
+                active_beat += 1
+                beat_changed = True
+            # if the fucking beat if last beat than go to first beat
+            else:
+                active_beat = 0
+                beat_changed = True

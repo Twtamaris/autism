@@ -704,8 +704,8 @@ while run:
                 beat_name = beat_name[:-1]
             if event.key == pygame.K_ESCAPE:
                 run = False
-    # Base beat length calculation
-    beat_length = 3600 // bpm  
+
+    beat_length = 3600 // bpm  # Base beat length calculation
 
     if playing:
         # Prepare new_list to hold beat lengths based on column selections
@@ -713,7 +713,7 @@ while run:
         columns_selected = []
 
         # Calculate the beat lengths based on selected columns
-        for i in range(beats):  # Ensure 'beats' is the total number of beats
+        for i in range(beats):  # Assuming `beats` is the total number of beats
             for j in range(2, 6):
                 if i < len(clicked[j]):
                     columns_selected.append(clicked[j][i])
@@ -726,14 +726,11 @@ while run:
 
             columns_selected = []
 
-        # Check if active_beat is within bounds before accessing new_list
-        if active_beat < len(new_list):
-            current_beat_length = new_list[active_beat]
-        else:
-            print(f"Error: active_beat {active_beat} is out of range for new_list of length {len(new_list)}")
-            current_beat_length = 0  # Default to 0 or any other fallback value
+        if len(new_list) != beats:
+            new_list = [40] * beats
 
-        print("this is active beat", active_beat, new_list)
+        # Use the beat length for the current active beat
+        current_beat_length = new_list[active_beat]
 
         # Increment active_length based on the current beat's length
         if active_length < current_beat_length:
@@ -747,7 +744,6 @@ while run:
             else:
                 active_beat = 0  # Restart from the first beat
                 beat_changed = True
-
 
     #     # Iterate o   ver the unique values in on_of_list to handle toggling
     unique_on_of_list = set(on_of_list)
