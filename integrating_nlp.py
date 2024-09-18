@@ -1,31 +1,31 @@
-from transformers import LlamaTokenizer, LlamaForCausalLM
-import sentencepiece
-from huggingface_hub import HfApi
+from transformers import pipeline
 
-# Authenticate with Hugging Face Hub
-api = HfApi()
-token = 'your_open_api_key'  # Replace with your actual Hugging Face token
+# Initialize the generator with GPT model
+generator = pipeline("text-generation", model="openai-gpt")
 
-# Function to load models with authentication
-def load_model_and_tokenizer(model_name, token):
-    tokenizer = LlamaTokenizer.from_pretrained(model_name, use_auth_token=token)
-    model = LlamaForCausalLM.from_pretrained(model_name, use_auth_token=token)
-    return tokenizer, model
+# Generate only the next word (max_new_tokens=1) for the input
+result = generator(
+    "wow",
+    max_new_tokens=1,  # Limit to generating only one token (word)
+    num_return_sequences=100,  # Get 10 next word predictions
+    return_full_text=False,  # Do not return the full input text
+    temperature=0.7,  # Adjust temperature for less randomness
+    top_k=50,  # Use top-k sampling to focus on top 50 probable words
+    top_p=0.9,  # Nucleus sampling to focus on top cumulative probability
+)
 
-# Load the tokenizer and model with token authentication
-tokenizer, model = load_model_and_tokenizer("meta-llama/Llama-2-7b-hf", token)
+# Define a list of unwanted tokens like punctuation and connectors
+unwanted_tokens = [".", ","]
 
-# Function to predict the next words
-def predict_next_words(sentence, num_words=3):
-    inputs = tokenizer(sentence, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=len(inputs["input_ids"][0]) + num_words, num_return_sequences=1)
+# Filter out unwanted tokens and extract the next words
+next_words = [
+    sequence["generated_text"].strip()
+    for sequence in result
+    if sequence["generated_text"].strip() not in unwanted_tokens
+]
 
-    predicted_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    next_words = predicted_text[len(sentence):].strip().split()[:num_words]
+# Remove duplicates by converting to a set, then back to a list
+unique_next_words = list(set(next_words))
 
-    return next_words
-
-# Example usage
-current_sentence = "I"
-next_words = predict_next_words(current_sentence)
-print(f"Next word predictions: {next_words}")
+# Print the filtered and unique next words
+print(unique_next_words)
