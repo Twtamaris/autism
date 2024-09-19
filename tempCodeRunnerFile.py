@@ -1,43 +1,27 @@
 import requests
+import time
 
-# Your Hugging Face API token
-api_token = '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'  # Replace with your actual Hugging Face token
+# Define API URL for a smaller model
+api_url = "https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-125M"
 
-# Model and endpoint configuration
-model_name = "meta-llama/Llama-2-7b-hf"  # Update this to your model of choice
-url = f"https://api-inference.huggingface.co/models/{model_name}"
+# Set your Hugging Face API token
+headers = {"Authorization": f"Bearer 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"}
 
-headers = {
-    "Authorization": f"Bearer {api_token}"
-}
-
-def predict_next_words(sentence, num_words=3):
-    # Prepare the payload
-    payload = {
-        "inputs": sentence,
-        "options": {
-            "use_cache": False  # Disable caching if needed
-        }
-    }
-    
-    # Send request to Hugging Face Inference API
-    response = requests.post(url, headers=headers, json=payload)
-    
-    # Check if the request was successful
+def query(payload):
+    response = requests.post(api_url, headers=headers, json=payload)
+    if response.status_code == 503:
+        # If the model is loading, wait and retry
+        loading_info = response.json()
+        wait_time = loading_info.get('estimated_time', 30)  # Default to 30 seconds if no time provided
+        print(f"Model is loading. Retrying in {wait_time} seconds...")
+        time.sleep(wait_time)
+        response = requests.post(api_url, headers=headers, json=payload)  # Retry after waiting
     if response.status_code == 200:
-        # Extract the generated text from the response
-        response_json = response.json()
-        generated_text = response_json.get('generated_text', '')
-        
-        # Extract the next words from the generated text
-        next_words = generated_text[len(sentence):].strip().split()[:num_words]
-        return next_words
+        return response.json()
     else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        return []
+        return {"error": f"API returned {response.status_code}: {response.text}"}
 
-# Example usage
-current_sentence = "I"
-next_words = predict_next_words(current_sentence)
-print(f"Next word predictions: {next_words}")
+# Input text prompt
+data = query({"inputs": "I am a man and you"})
+
+print(data)
